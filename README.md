@@ -2,9 +2,13 @@
 
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
 
-To get started, check out the repository, inspect the code,
+To get started, check out the repository.
 
 ### Getting started
+
+Open the index.html inside a browser to operate the website. Set up a local server and using ngrok to get an external link to the local server. Now you can inspect the speed of the website using Google dev PageSpeed to see the score of loading the website.
+
+To assess the performance of the pizza.html, navigate to pizza.html by clicking on Cam's Pizzeria and open up the dev tool inside Chrome. Now you can check the frame rate of this website when scolling and time it takes to change the size of pizzas by clicking on the disirable size.
 
 ####Part 1: Optimize PageSpeed Insights score for index.html
 

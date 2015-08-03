@@ -413,13 +413,13 @@ var resizePizzas = function(size) {
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -428,13 +428,15 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  
-
   // Iterates through pizza elements on the page and changes their widths
    function changePizzaSizes(size) {
-    //select all the elements need to be changed.
+    // querySelector was replaced by getElementByClassName to speed up
+    // define local variable to concisely select all randomPizzaContainer classes outside 'for loop'
     var pizzaSlector = document.getElementsByClassName("randomPizzaContainer");
-    var newsize = 0;
+    var newsize = 0;  // local newsize variable to save resource from defining inside 'for loop'
+
+    // function determinDx was replaced by switch statement to reduce calculation and
+    // avoid forced synchronous layout in each for-loop iteration
     switch(size){
       case "1":
         newsize = 25;  //if small was chosen, width set to 25% relative width
@@ -448,8 +450,10 @@ var resizePizzas = function(size) {
       default:
         console.log("bug in sizechange.");
     }
+    // local newsize and iterLen var to save resource from defining inside 'for loop'
     var newwidth = newsize + "%";
     var iterLen = pizzaSlector.length;
+    // for-loop was updated for variable changes and conciseness
     for (var i = 0; i < iterLen; i++) {
       pizzaSlector[i].style.width = newwidth;
     }
@@ -501,17 +505,19 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  //select all the moving pizza elements
+  // querySelector was replaced for speed
   var items = document.getElementsByClassName('mover');
+  // acquisition of scroll position by scrollTop was moved out of for-loop to avoid forced synchronous layout
   var scrollPos = document.body.scrollTop;
+  // define local var phase, iterLen, which will be used in for-loop, to save resource from defining inside
   var phase, iterLen = items.length;
   function update() {
     for (var i = 0; i < iterLen; i++) {
       phase = Math.sin(scrollPos + (i % 5));  //update the relative phase pos
-      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';  //update all the items' position
     }
   }
-  //put the scrolling animation in the requestAnimationFrame
+  //put the scrolling animation in the requestAnimationFrame to gain perfomance
   requestAnimationFrame(update);
   
 
@@ -530,12 +536,15 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var iHeight = window.screen.height;
-  var iWidth = window.screen.width;
-  var cols = Math.ceil(iWidth/200);  // # of columns
-  var rows = Math.ceil(iHeight/300);  // # of rows
+  // Instead of generating 200 sliding pizza elements, most of which are placed off screen,
+  // this function was optimized to dynamically decide how many pizza elements will be created
+  // based on the height and width of the browser window.
+  var iHeight = window.screen.height;  // Acquire the height of the browser window
+  var iWidth = window.screen.width;    // Acquire the width of the browser window
+  var cols = Math.floor(iWidth/250);  // # of columns, based on acquired height
+  var rows = Math.ceil(iHeight/300);  // # of rows, based on acquired width
   var num = cols * rows;  // total # of moving pizzas
-  //console.log(num);  // This line is for debugging
+  // console.log(cols, rows, num);  // This line is for debugging
   var s = 256;
   var elem;
   for (var i = 0; i < num; i++) {
@@ -546,7 +555,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    //querySelector was replaced for speed
+    document.getElementById("movingPizzas1").appendChild(elem);
   }
   updatePositions();
 });
