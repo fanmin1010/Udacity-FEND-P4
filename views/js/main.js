@@ -513,7 +513,7 @@ function updatePositions() {
   var phase, iterLen = items.length;
   function update() {
     for (var i = 0; i < iterLen; i++) {
-      phase = Math.sin(scrollPos + (i % 5));  //update the relative phase pos
+      phase = Math.sin(scrollPos/1250 + (i % 5));  //update the relative phase pos
       items[i].style.left = items[i].basicLeft + 100 * phase + 'px';  //update all the items' position
     }
   }
@@ -541,12 +541,21 @@ document.addEventListener('DOMContentLoaded', function() {
   // based on the height and width of the browser window.
   var iHeight = window.screen.height;  // Acquire the height of the browser window
   var iWidth = window.screen.width;    // Acquire the width of the browser window
-  var cols = Math.floor(iWidth/250);  // # of columns, based on acquired height
-  var rows = Math.ceil(iHeight/300);  // # of rows, based on acquired width
-  var num = cols * rows;  // total # of moving pizzas
-  // console.log(cols, rows, num);  // This line is for debugging
+  var cols;  // # of columns, based on acquired width
+  var rows = Math.ceil(iHeight/300);  // # of rows, based on acquired height
   var s = 256;
   var elem;
+  var temp = Math.floor(iWidth/250);  // local variable used to determine # of cols
+  // if-else statements set cols and makes sure cols modulo 5 is not 0
+  if(temp < 5)
+    cols = 4;
+  else if(temp<11)
+    cols = 8;
+  else
+    cols = 12;
+   var num = cols * rows;  // total # of moving pizzas
+  // console.log(cols, rows, num);  // This line is for debugging
+
   for (var i = 0; i < num; i++) {
     elem = document.createElement('img');
     elem.className = 'mover';
